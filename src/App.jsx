@@ -46,6 +46,11 @@ function App() {
     const handleKeydown = (event) => {
       const key = event.key
 
+      if (key === 'Enter') {
+        setCurrentRowIndex(i => i + 1)
+        setCurrentCellIndex(0)
+      }
+
       // Allow user to delete the most recent letter
       if (key === 'Backspace') {
 
@@ -58,7 +63,7 @@ function App() {
           newGuesses[currentRowIndex] = [...newGuesses[currentRowIndex]]
           newGuesses[currentRowIndex][currentCellIndex - 1] = EMPTY_GUESS
           return newGuesses
-        })
+        }) 
 
         setCurrentCellIndex(i => i - 1)
       }
