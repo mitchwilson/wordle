@@ -3,75 +3,101 @@ import heroImg from './assets/hero.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import './App.css'
+import Board from './Board';
 
-const MAX_LETTER_LENGTH = 5
+
 
 function App() {
-  const [word, setWord] = useState('')
-  const [guesses, setGuesses] = useState(Array(6).fill(null))
+  // Constansts
+  const EMPTY_GUESS = ' '
+  const MAX_LETTER_LENGTH = 5
+  const MAX_ROWS_LENGTH = 6
   const URL = '/words.json'
+  const createEmptyRow = () => Array(MAX_LETTER_LENGTH).fill(EMPTY_GUESS)
+  const createEmptyBoard = () =>
+    Array.from({ length: MAX_ROWS_LENGTH }, () => createEmptyRow())
+  // Local states
+  const [guesses, setGuesses] = useState(createEmptyBoard)
+  const [solution, setSolution] = useState('')
+  const [currentRowIndex, setCurrentRowIndex] = useState(0)
+  const [currentCellIndex, setCurrentCellIndex] = useState(0)
+
+  useEffect(()=>{
+    const fetchRandomSolution = async () => {
+      const response = await fetch(URL)
+      const words = await response.json()
+      const randomWord = words[Math.floor(Math.random() * words.length)]
+      setSolution(randomWord)
+    }
+ 
+    fetchRandomSolution()
+    
+  }, [])
+
+  useEffect(() => {
+    const updateBoard = () => {
+
+    }
+
+    updateBoard()
+  })
 
   useEffect(() => {
     const handleKeydown = (event) => {
       const key = event.key
 
+      // Allow user to delete the most recent letter
       if (key === 'Backspace') {
-        setCurrentGuess((prev) => prev.slice(0, -1))
-        return
+
+        if(currentCellIndex === 0 && currentRowIndex === 0 ) {
+          return
+        }
+
+        setGuesses( guesses => {
+          const newGuesses = [ ...guesses ]
+          newGuesses[currentRowIndex] = [...newGuesses[currentRowIndex]]
+          newGuesses[currentRowIndex][currentCellIndex - 1] = EMPTY_GUESS
+          return newGuesses
+        })
+
+        setCurrentCellIndex(i => i - 1)
       }
 
+      // Skip non-alphabet characters such as numbers and punctuation
       if (!/^[a-zA-Z]$/.test(key)) {
         return
       }
 
-      setCurrentGuess((prev)=> {
-        if(prev.length < MAX_LETTER_LENGTH) {
-          return prev + key.toLowerCase()
+      setGuesses( guesses => {
+        if (currentCellIndex >= MAX_LETTER_LENGTH) {
+          return guesses
         }
 
-        return prev
+        const newGuesses = [ ...guesses ]
+        newGuesses[currentRowIndex] = [...newGuesses[currentRowIndex]]
+        newGuesses[currentRowIndex][currentCellIndex] = key.toLowerCase()
+
+        return newGuesses
       })
+
+      setCurrentCellIndex(i => Math.min(i + 1, MAX_LETTER_LENGTH))
     }
+
     window.addEventListener('keydown', handleKeydown)
 
     return () => {
       window.removeEventListener('keydown', handleKeydown)
     }
-  }, [])
+  }, [currentCellIndex, currentRowIndex])
 
-  useEffect(()=>{
-    const doFetch = async () => {
-      const response = await fetch(URL)
-      const words = await response.json()
-      const randomWord = words[Math.floor(Math.random() * words.length)]
-      setWord(randomWord)
-    }
- 
-    doFetch();
-    
-  }, [])
 
   return (
     <>
       <section id="center">
-        {
-          guesses.map(guess => {
-            return <Line key={Math.random()} guess={word} />
-          })
-        }
+        { solution }
+        <Board model={ guesses } />
       </section>
     </>
-  )
-}
-
-const Line = ( {guess} ) => {
-  const tiles = []
-
-  for(let i=0; i<MAX_LETTER_LENGTH; i++) {
-    tiles.push(<div key={i} className="tile">{guess[i]}</div>)
-  }
-  return (
-    <div key={guess} className="line">{tiles}</div>
   )
 }
 
