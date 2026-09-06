@@ -5,7 +5,7 @@ function Line( { guess } ) {
     tiles.push(<div key={i} className="tile">{guess[i]}</div>)
   }
   return (
-    <div key={guess} className="line">{tiles}</div>
+    <div className="line">{tiles}</div>
   )
 }
 

@@ -5,8 +5,7 @@ function Board( { model } ) {
         <div className="board">
             {
                 model.map(( guess, i ) => {
-                    console.log(guess, i)
-                    return <Line key={Math.random()} guess={guess} />
+                    return <Line key={i} guess={guess} />
                 })
             }
         </div>
