@@ -1,11 +1,6 @@
-function Line( { guess } ) {
-  const tiles = []
-
-  for(let i=0; i<guess.length; i++) {
-    tiles.push(<div key={i} className="tile">{guess[i]}</div>)
-  }
+function Line( { children } ) {
   return (
-    <div className="line">{tiles}</div>
+    <div className="line">{ children }</div>
   )
 }
 

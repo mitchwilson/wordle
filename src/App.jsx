@@ -1,18 +1,33 @@
 import './App.css'
 import Board from './Board'
+import Line from './Line'
 import useWordleGame from './hooks/useWordleGame'
 
 function App() {
   const { currentGuess, guesses, solution } = useWordleGame()
+  const EMPTY_GUESS = '     '
+  const newGuesses = [...guesses]
+
+  while(newGuesses.length < 6) {
+      newGuesses.push(EMPTY_GUESS)
+  }
 
   return (
-    <>
-      <section id="center">
-        <div>{ solution }</div>
-        <div>{ currentGuess }</div>
-        <Board guesses={ [...guesses] } />
-      </section>
-    </>
+    <section id="center">
+      <div>{ solution }</div>
+      <div>{ currentGuess }</div>
+      <Board>
+        {
+          newGuesses.map(( guess, i ) => {
+            const tiles = []
+            for(let i=0; i<guess.length; i++) {
+              tiles.push(<div key={i} className="tile">{guess[i]}</div>)
+            }
+            return <Line key={i}>{ tiles }</Line>
+          })
+          }
+      </Board>
+    </section>
   )
 }
 
