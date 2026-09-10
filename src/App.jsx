@@ -3,14 +3,14 @@ import Board from './Board'
 import useWordleGame from './hooks/useWordleGame'
 
 function App() {
-  const { guesses, solution } = useWordleGame()
-
+  const { currentGuess, guesses, solution } = useWordleGame()
 
   return (
     <>
       <section id="center">
-        { solution }
-        <Board model={ guesses } />
+        <div>{ solution }</div>
+        <div>{ currentGuess }</div>
+        <Board guesses={ [...guesses] } />
       </section>
     </>
   )

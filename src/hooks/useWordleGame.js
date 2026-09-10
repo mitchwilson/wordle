@@ -1,25 +1,18 @@
 import { useEffect, useState } from 'react'
 
-const EMPTY_GUESS = ' '
 const MAX_LETTER_LENGTH = 5
-const MAX_ROWS_LENGTH = 6
 const URL = '/words.json'
 
-const createEmptyRow = () => Array(MAX_LETTER_LENGTH).fill(EMPTY_GUESS)
-const createEmptyBoard = () =>
-  Array.from({ length: MAX_ROWS_LENGTH }, () => createEmptyRow())
-
 function useWordleGame() {
-  const [guesses, setGuesses] = useState(createEmptyBoard)
+  const [guesses, setGuesses] = useState([])
   const [solution, setSolution] = useState('')
-  const [currentRowIndex, setCurrentRowIndex] = useState(0)
-  const [currentCellIndex, setCurrentCellIndex] = useState(0)
+  const [currentGuess, setCurrentGuess] = useState('')
 
   useEffect(() => {
     const fetchRandomSolution = async () => {
       const response = await fetch(URL)
       const words = await response.json()
-      const randomWord = words[Math.floor(Math.random() * words.length)]
+      const randomWord = words[Math.floor(Math.random() *  words.length)]
       setSolution(randomWord)
     }
 
@@ -31,45 +24,32 @@ function useWordleGame() {
       const key = event.key
 
       if (key === 'Enter') {
-        if (currentCellIndex === MAX_LETTER_LENGTH && currentRowIndex < MAX_ROWS_LENGTH - 1) {
-          setCurrentRowIndex((row) => row + 1)
-          setCurrentCellIndex(0)
-        }
-        return
-      }
-
-      if (key === 'Backspace') {
-        if (currentCellIndex === 0) {
+        if (currentGuess.length === MAX_LETTER_LENGTH) {
+          setGuesses(prevItems => [...prevItems, currentGuess])
+          setCurrentGuess('') 
           return
         }
+      }
 
-        setGuesses((prevGuesses) => {
-          const nextGuesses = [...prevGuesses]
-          nextGuesses[currentRowIndex] = [...nextGuesses[currentRowIndex]]
-          nextGuesses[currentRowIndex][currentCellIndex - 1] = EMPTY_GUESS
-          return nextGuesses
-        })
-
-        setCurrentCellIndex((cell) => cell - 1)
+      // Delete last character of current guess when the Backspace or Delete key is pressed
+      if (key === 'Backspace') {
+        if (currentGuess.length > 0) {
+          setCurrentGuess(str => str.slice(0, str.length-1))
+        }
         return
       }
 
+      // Do not allow non-alphabet characters
       if (!/^[a-zA-Z]$/.test(key)) {
         return
       }
 
-      if (currentRowIndex >= MAX_ROWS_LENGTH || currentCellIndex >= MAX_LETTER_LENGTH) {
+      // Limit guess character length to MAX length allowed
+      if (currentGuess.length === MAX_LETTER_LENGTH) {
         return
       }
 
-      setGuesses((prevGuesses) => {
-        const nextGuesses = [...prevGuesses]
-        nextGuesses[currentRowIndex] = [...nextGuesses[currentRowIndex]]
-        nextGuesses[currentRowIndex][currentCellIndex] = key.toLowerCase()
-        return nextGuesses
-      })
-
-      setCurrentCellIndex((cell) => Math.min(cell + 1, MAX_LETTER_LENGTH))
+      setCurrentGuess(str => str + key)
     }
 
     window.addEventListener('keydown', handleKeydown)
@@ -77,13 +57,12 @@ function useWordleGame() {
     return () => {
       window.removeEventListener('keydown', handleKeydown)
     }
-  }, [currentCellIndex, currentRowIndex])
+  }, [guesses, currentGuess])
 
   return {
+    currentGuess,
     guesses,
     solution,
-    currentRowIndex,
-    currentCellIndex,
   }
 }
 
