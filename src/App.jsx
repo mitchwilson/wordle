@@ -14,8 +14,8 @@ function App() {
 
   return (
     <section id="center">
-      <div>{ solution }</div>
-      <div>{ currentGuess }</div>
+      <div>{ `Solution: ${solution.toUpperCase()}` }</div>
+      <div>{ `Current Guess: ${currentGuess}` }</div>
       <Board>
         {
           newGuesses.map(( guess, i ) => {
