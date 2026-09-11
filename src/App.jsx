@@ -14,7 +14,7 @@ function App() {
 
   return (
     <section id="center">
-      <div>{ `Solution: ${solution.toUpperCase()}` }</div>
+      {/* <div>{ `Solution: ${solution.toUpperCase()}` }</div> */}
       <div>{ `Current Guess: ${currentGuess.toUpperCase()}` }</div>
       <Board>
         {
