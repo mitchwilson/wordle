@@ -19,17 +19,20 @@ function App() {
       <Board>
         {
           newGuesses.map(( guess, i ) => {
-            let stateName = ''
-            if( guess === solution) {
-              stateName = 'correct'
-            } else if (guess === EMPTY_GUESS) {
-              stateName = 'unknown'
-            } else {
-              stateName = 'incorrect'
-            }
             const className = "tile"
             const tiles = []
             for(let i=0; i<guess.length; i++) {
+              let stateName = ''
+              let character = guess[i]
+              if( guess[i] === solution[i]) {
+                stateName = 'correct'
+              } else if (guess === EMPTY_GUESS) {
+                stateName = 'unknown'
+              } else if ( solution.indexOf(guess[i]) > -1 ) {
+                stateName = 'in-word'
+              } else {
+                stateName = 'incorrect'
+              }
               tiles.push(<div key={i} className={ `${className} ${stateName}` }>{guess[i].toUpperCase()}</div>)
             }
             return <Line key={i}>{ tiles }</Line>
