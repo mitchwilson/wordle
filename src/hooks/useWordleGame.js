@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
+import { MAX_LETTER_LENGTH } from '../constants'
 
-const MAX_LETTER_LENGTH = 5
 const URL = '/words.json'
 
 function useWordleGame() {
+  const [currentGuess, setCurrentGuess] = useState('')
   const [guesses, setGuesses] = useState([])
   const [solution, setSolution] = useState('')
-  const [currentGuess, setCurrentGuess] = useState('')
 
   useEffect(() => {
     const fetchRandomSolution = async () => {
@@ -49,9 +49,9 @@ function useWordleGame() {
       if (currentGuess.length === MAX_LETTER_LENGTH) {
         return
       }
-
+      
       // Uppercase each letter and add to current guess
-      setCurrentGuess(str => str + key.toUpperCase())
+      setCurrentGuess(str => str + key)
     }
 
     window.addEventListener('keydown', handleKeydown)
@@ -59,7 +59,7 @@ function useWordleGame() {
     return () => {
       window.removeEventListener('keydown', handleKeydown)
     }
-  }, [guesses, currentGuess])
+  }, [currentGuess])
 
   return {
     currentGuess,

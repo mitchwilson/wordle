@@ -13,6 +13,14 @@
   text-align: center;
 }
 
+.correct {
+  background-color: green;
+}
+
+.incorrect {
+  background-color: darkred;
+}
+
 .counter {
   font-size: 16px;
   padding: 5px 10px;
