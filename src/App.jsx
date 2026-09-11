@@ -2,28 +2,20 @@ import './App.css'
 import Board from './Board'
 import Line from './Line'
 import useWordleGame from './hooks/useWordleGame'
-import { EMPTY_GUESS } from './constants'
+import { EMPTY_GUESS, MAX_LETTER_LENGTH } from './constants'
 
 function App() {
   const { currentGuess, guesses, solution } = useWordleGame()
   const newGuesses = [...guesses]
 
-  while(newGuesses.length < 6) {
-      newGuesses.push(EMPTY_GUESS)
-  }
+  // while(newGuesses.length < 6) {
+  //     newGuesses.push(EMPTY_GUESS)
+  // }
 
   return (
     <section id="center">
+      <h1>Wordle Demo</h1>
       <Board>
-        {
-          currentGuess && <Line key="current-guess">
-            {
-              [...currentGuess].map( (character, j) =>{
-                return  <div key={j} className="tile unknown">{ character.toUpperCase() }</div>
-              })
-            }
-          </Line>
-        }
         {
           newGuesses.map(( guess, i ) => {
             const className = "tile"
@@ -45,6 +37,42 @@ function App() {
             return <Line key={i}>{ tiles }</Line>
           })
           }
+        {
+          <Line key="current-guess">
+            {
+              (()=>{
+                let x = 0
+                let domArr = []
+                while( x < MAX_LETTER_LENGTH ) {
+                  let result = currentGuess[x++] || ' '
+                  domArr.push(<div key={x} className="tile unknown">{ result.toUpperCase() }</div>)
+                }
+                return domArr
+              })()
+            }
+          </Line>
+        }
+        {
+          (()=>{
+            let i = 0
+            const lines = []
+            while( i < (MAX_LETTER_LENGTH - newGuesses.length) ) {
+              lines.push(<Line key={i++}>
+                {
+                  (() => {
+                    let j = 0
+                    let domArr = []
+                    while( j < MAX_LETTER_LENGTH ) {
+                      domArr.push(<div key={j++} className="tile unknown">{ ' ' }</div>)
+                    }
+                    return domArr
+                  })()
+                } 
+              </Line>)
+            }
+            return lines
+          })()
+        }
       </Board>
     </section>
   )
