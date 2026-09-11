@@ -1,4 +1,6 @@
 :root {
+  --WORDLE_BLACK: #000;
+  --WORDLE_GREEN: #6ca965;
   --WORDLE_GRAY: #787c7f;
   --WORDLE_WHITE: #fff;
   --WORDLE_YELLOW: #c8b653;
@@ -24,7 +26,7 @@
 }
 
 .correct {
-  background-color: #6ca965;
+  background-color: var(--WORDLE_GREEN);
 }
 
 .incorrect {
@@ -35,8 +37,12 @@
   background-color: var(--WORDLE_YELLOW);
 }
 
+.unknown {
+  background-color: var(--WORDLE_BLACK);
+}
+
 #center {
-  background-color: white;
+  background-color: var(--WORDLE_BLACK);
   display: flex;
   flex-direction: column;
   gap: 25px;

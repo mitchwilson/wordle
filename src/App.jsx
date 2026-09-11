@@ -24,9 +24,9 @@ function App() {
             for(let i=0; i<guess.length; i++) {
               let stateName = ''
               let character = guess[i]
-              if( guess[i] === solution[i]) {
+              if( character === solution[i]) {
                 stateName = 'correct'
-              } else if (guess === EMPTY_GUESS) {
+              } else if ( character === ' ' ) {
                 stateName = 'unknown'
               } else if ( solution.indexOf(guess[i]) > -1 ) {
                 stateName = 'in-word'
