@@ -22,12 +22,11 @@ function useWordleGame() {
   useEffect(() => {
     const handleKeydown = (event) => {
       const key = event.key
-
       // Enter current guess as latest guess when user presses the Enter key
       if (key === 'Enter') {
         if (currentGuess.length === MAX_LETTER_LENGTH) {
           setGuesses(prevItems => [...prevItems, currentGuess])
-          setCurrentGuess('') 
+          setCurrentGuess('')
           return
         }
       }
@@ -49,7 +48,7 @@ function useWordleGame() {
       if (currentGuess.length === MAX_LETTER_LENGTH) {
         return
       }
-      
+
       // Uppercase each letter and add to current guess
       setCurrentGuess(str => str + key)
     }

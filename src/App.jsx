@@ -14,9 +14,16 @@ function App() {
 
   return (
     <section id="center">
-      {/* <div>{ `Solution: ${solution.toUpperCase()}` }</div> */}
-      <div>{ `Current Guess: ${currentGuess.toUpperCase()}` }</div>
       <Board>
+        {
+          currentGuess && <Line key="current-guess">
+            {
+              [...currentGuess].map( (character, j) =>{
+                return  <div key={j} className="tile unknown">{ character.toUpperCase() }</div>
+              })
+            }
+          </Line>
+        }
         {
           newGuesses.map(( guess, i ) => {
             const className = "tile"
