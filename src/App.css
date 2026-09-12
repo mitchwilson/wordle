@@ -41,6 +41,33 @@
   background-color: var(--WORDLE_BLACK);
 }
 
+h2 {
+  color: var(--WORDLE_GREEN);
+  /* Set initial state to invisible */
+  opacity: 0; 
+  
+  /* Name, duration, timing function, and forward persistence */
+  animation: fadeIn 1.5s ease-in-out forwards;
+}
+
+button {
+  border: 2px white solid;
+  font-size: 20px;
+  height: 27px;
+}
+
+/* Define the animation steps */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+
 #center {
   background-color: var(--WORDLE_BLACK);
   display: flex;

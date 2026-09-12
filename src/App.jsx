@@ -5,16 +5,15 @@ import useWordleGame from './hooks/useWordleGame'
 import { EMPTY_GUESS, MAX_LETTER_LENGTH } from './constants'
 
 function App() {
-  const { currentGuess, guesses, solution } = useWordleGame()
+  const { currentGuess, gameover, guesses, solution } = useWordleGame()
   const newGuesses = [...guesses]
-
-  // while(newGuesses.length < 6) {
-  //     newGuesses.push(EMPTY_GUESS)
-  // }
 
   return (
     <section id="center">
       <h1>Wordle Demo</h1>
+      {
+        gameover ? <h2>GAME OVER <button onClick={() => window.location.reload()}>RESTART</button></h2> : ''
+      }
       <Board>
         {
           newGuesses.map(( guess, i ) => {

@@ -7,6 +7,7 @@ function useWordleGame() {
   const [currentGuess, setCurrentGuess] = useState('')
   const [guesses, setGuesses] = useState([])
   const [solution, setSolution] = useState('')
+  const [gameover, setGameover] = useState(false)
 
   useEffect(() => {
     const fetchRandomSolution = async () => {
@@ -22,11 +23,20 @@ function useWordleGame() {
   useEffect(() => {
     const handleKeydown = (event) => {
       const key = event.key
+
+
+        if ( gameover ) {
+          return
+        }
+
       // Enter current guess as latest guess when user presses the Enter key
       if (key === 'Enter') {
         if (currentGuess.length === MAX_LETTER_LENGTH) {
           setGuesses(prevItems => [...prevItems, currentGuess])
           setCurrentGuess('')
+          if ( currentGuess === solution ) {
+            setGameover(true)
+          }
           return
         }
       }
@@ -62,6 +72,7 @@ function useWordleGame() {
 
   return {
     currentGuess,
+    gameover,
     guesses,
     solution,
   }
