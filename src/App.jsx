@@ -15,7 +15,7 @@ function App() {
         gameover ? <h2>GAME OVER <button onClick={() => window.location.reload()}>RESTART</button></h2> : ''
       }
       <Board>
-        {
+        { // This section is for past guesses --------
           newGuesses.map(( guess, i ) => {
             const className = "tile"
             const tiles = []
@@ -31,12 +31,12 @@ function App() {
               } else {
                 stateName = 'incorrect'
               }
-              tiles.push(<div key={i} className={ `${className} ${stateName}` }>{guess[i].toUpperCase()}</div>)
+              tiles.push(<div key={i} className={ `${className} ${stateName} past` }>{guess[i].toUpperCase()}</div>)
             }
             return <Line key={i}>{ tiles }</Line>
           })
-          }
-        {
+        }
+        { // This section is for the current guess ---------------------
           <Line key="current-guess">
             {
               (()=>{
@@ -44,14 +44,14 @@ function App() {
                 let domArr = []
                 while( x < MAX_LETTER_LENGTH ) {
                   let result = currentGuess[x++] || ' '
-                  domArr.push(<div key={x} className="tile unknown">{ result.toUpperCase() }</div>)
+                  domArr.push(<div key={x} className="tile unknown current">{ result.toUpperCase() }</div>)
                 }
                 return domArr
               })()
             }
           </Line>
         }
-        {
+        { // This section is for the future guesses -------
           (()=>{
             let i = 0
             const lines = []
@@ -62,7 +62,7 @@ function App() {
                     let j = 0
                     let domArr = []
                     while( j < MAX_LETTER_LENGTH ) {
-                      domArr.push(<div key={j++} className="tile unknown">{ ' ' }</div>)
+                      domArr.push(<div key={j++} className="tile unknown past">{ ' ' }</div>)
                     }
                     return domArr
                   })()
