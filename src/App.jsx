@@ -2,7 +2,7 @@ import './App.css'
 import Board from './Board'
 import Line from './Line'
 import useWordleGame from './hooks/useWordleGame'
-import { EMPTY_GUESS, MAX_LETTER_LENGTH } from './constants'
+import { EMPTY_GUESS, MAX_LETTER_LENGTH, MAX_FUTURE_ROWS_LENGTH } from './constants'
 
 function App() {
   const { currentGuess, gameover, guesses, solution } = useWordleGame()
@@ -42,9 +42,11 @@ function App() {
               (()=>{
                 let x = 0
                 let domArr = []
-                while( x < MAX_LETTER_LENGTH ) {
-                  let result = currentGuess[x++] || ' '
-                  domArr.push(<div key={x} className="tile unknown current">{ result.toUpperCase() }</div>)
+                if ( ! gameover ) {
+                  while( x < MAX_LETTER_LENGTH ) {
+                    let result = currentGuess[x++] || ' '
+                    domArr.push(<div key={x} className="tile unknown current">{ result.toUpperCase() }</div>)
+                  }
                 }
                 return domArr
               })()
@@ -53,9 +55,9 @@ function App() {
         }
         { // This section is for the future guesses -------
           (()=>{
-            let i = 0
+            let i = gameover ? -1 : 0 // i needs to be set based on final result for UI number of rows
             const lines = []
-            while( i < (MAX_LETTER_LENGTH - newGuesses.length) ) {
+            while( i < ( MAX_FUTURE_ROWS_LENGTH - newGuesses.length ) ) {
               lines.push(<Line key={i++}>
                 {
                   (() => {

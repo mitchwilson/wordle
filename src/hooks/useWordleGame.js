@@ -37,6 +37,9 @@ function useWordleGame() {
           if ( currentGuess === solution ) {
             setGameover(true)
           }
+          if ( guesses.length === 5 ) {
+            setGameover(true)
+          }
           return
         }
       }
