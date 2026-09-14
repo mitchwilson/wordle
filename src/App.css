@@ -42,7 +42,7 @@
 }
 
 h1 {
-  color: orange;
+  color: var(--WORDLE_YELLOW);
 }
 
 h2 {
@@ -75,7 +75,7 @@ button {
 }
 
 .current {
-  border-color: orange;
+  border-color: var(--WORDLE_YELLOW);
 }
 
 
